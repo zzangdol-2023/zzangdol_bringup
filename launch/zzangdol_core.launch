@@ -1,9 +1,12 @@
 <launch>
   <arg name="multi_robot_name" default=""/>
-
+  <!-- zzangdol_core -->
   <node pkg="rosserial_python" type="serial_node.py" name="zzangdol_core" output="screen">
     <param name="port" value="/dev/ttyUSB0"/>
     <param name="baud" value="115200"/>
     <param name="tf_prefix" value="$(arg multi_robot_name)"/>
   </node>
+  <!-- cmd_vel converter  -->
+  <include file="$(find zzangdol_bringup)/launch/zzangdol_cmd_vel_converter.launch">
+  </include>
 </launch>

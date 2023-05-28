@@ -3,7 +3,7 @@
   <name>zzangdol_bringup</name>
   <version>0.0.0</version>
   <description>The zzangdol_bringup package</description>
-  <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
+  <author email="geonhab504@gmail.com">GeonhaPark</author>
   <maintainer email="geonhab504@gmail.com">GeonhaPark</maintainer>
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
@@ -12,8 +12,8 @@
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>std_msgs</build_depend>
-  <build_export_depend>roscpp</build_export_depend>
   <build_depend>tf</build_depend>
+  <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>tf</exec_depend>
