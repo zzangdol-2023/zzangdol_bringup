@@ -6,7 +6,9 @@
 #define track_ 5.0
 #define wheelbase_ 0.085
 #define MAX_LINEAR_VEL 20
-#define MIN_LINEAR_VEL 0
+#define MIN_LINEAR_VEL 5
+#define MAX_ANGLE 45
+#define MIN_ANGLE 0
 
 // Create a publisher for the cmd_vel topic
 ros::Publisher cmd_vel_converter;
@@ -22,15 +24,31 @@ bool cmdVel2Converted(const geometry_msgs::Twist::ConstPtr &cmd_vel)
 
     /* get steering angle data from cmd_vel (radian to angle) */
     double r = cmd_vel->linear.x / cmd_vel->angular.z;
-    if (fabs(r) < track_ / 2.0)
-    {
-        if (r == 0)
-            r = cmd_vel->angular.z / fabs(cmd_vel->angular.z) * (track_ / 2.0 + 0.01);
-        else
-            r = r / fabs(r) * (track_ / 2.0 + 0.01);
-    }
+    ROS_INFO("cmd_vel_converter - radius : %f", r);
+    // if (fabs(r) < track_ / 2.0)
+    // {
+    //     if (r == 0)
+    //         r = cmd_vel->angular.z / fabs(cmd_vel->angular.z) * (track_ / 2.0 + 0.01);
+    //     else
+    //         r = r / fabs(r) * (track_ / 2.0 + 0.01);
+    // }
     double steering_angle = std::atan(wheelbase_ / r);
-    ROS_INFO("cmd_vel_converter - steering_angle: %f", steering_angle);
+    double steering_degree = std::fabs(steering_angle * (180.0 / M_PI));
+    if ((int)steering_degree > MAX_ANGLE)
+        steering_degree = MAX_ANGLE;
+    if ((int)steering_degree <= MIN_ANGLE)
+        steering_degree = MIN_ANGLE;
+
+    if (std::signbit(cmd_vel->angular.z))
+    {
+        ROS_INFO("cmd_vel_converter <0 - steering_degree: %f", -steering_degree);
+        converted.angular.z = -steering_degree;
+    }
+    else
+    {
+        ROS_INFO("cmd_vel_converter >0 - steering_degree: %f", steering_degree);
+        converted.angular.z = steering_degree;
+    }
 
     /* get dc motor pwm value (ms to pwm)
      * PWM info
@@ -47,21 +65,21 @@ bool cmdVel2Converted(const geometry_msgs::Twist::ConstPtr &cmd_vel)
      * x = y/0.178+5.0 => y가 m/s(linear.x) x가 topic.
      */
     double linear_vel = std::fabs(cmd_vel->linear.x);
-    linear_vel = ((cmd_vel->linear.x) / 0.178) + 5.0;
+    linear_vel = (linear_vel / 0.178) + 5.0;
     if ((int)linear_vel > MAX_LINEAR_VEL)
         linear_vel = MAX_LINEAR_VEL;
-    if ((int)linear_vel < MIN_LINEAR_VEL)
+    if ((int)linear_vel <= MIN_LINEAR_VEL)
         linear_vel = 0;
 
-    if ((int)cmd_vel->linear.x < 0)
+    if (std::signbit(cmd_vel->linear.x))
     {
-        ROS_INFO("cmd_vel_converter - linear_vel: %f", -linear_vel);
-        // converted.linear.x = -linear_vel;
+        ROS_INFO("cmd_vel_converter <0 - linear_vel: %f", -linear_vel);
+        converted.linear.x = -linear_vel;
     }
     else
     {
-        ROS_INFO("cmd_vel_converter - linear_vel: %f", linear_vel);
-        // converted.linear.x = linear_vel;
+        ROS_INFO("cmd_vel_converter >0 - linear_vel: %f", linear_vel);
+        converted.linear.x = linear_vel;
     }
 
     return true;
