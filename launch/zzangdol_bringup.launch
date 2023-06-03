@@ -12,6 +12,6 @@
   <include file="$(find zzangdol_bringup)/launch/zzangdol_lidar.launch">
     <arg name="set_frame_id" value="$(arg set_lidar_frame_id)"/>
   </include>
-  <!-- <node pkg="zzangdol_bringup" type="zzangdol_diagnostics" name="zzangdol_diagnostics" output="screen"/> -->
+  <!-- <node pkg="navstack_pub" type="zzangdol_diagnostics" name="zzangdol_diagnostics" output="screen"/> -->
 
 </launch>
