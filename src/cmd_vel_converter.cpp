@@ -7,7 +7,7 @@
 #define wheelbase_ 0.085
 #define MAX_LINEAR_VEL 20
 #define MIN_LINEAR_VEL 5
-#define MAX_ANGLE 45
+#define MAX_ANGLE 20
 #define MIN_ANGLE 0
 
 // Create a publisher for the cmd_vel topic
@@ -15,6 +15,7 @@ ros::Publisher cmd_vel_converter;
 ros::Subscriber cmd_vel_sub;
 geometry_msgs::Twist converted;
 geometry_msgs::Twist prev_converted;
+int back_driving_flag_cnt = 0;
 
 bool cmdVel2Converted(const geometry_msgs::Twist::ConstPtr &cmd_vel)
 {
@@ -74,10 +75,25 @@ bool cmdVel2Converted(const geometry_msgs::Twist::ConstPtr &cmd_vel)
     if (std::signbit(cmd_vel->linear.x))
     {
         ROS_INFO("cmd_vel_converter <0 - linear_vel: %f", -linear_vel);
-        converted.linear.x = -linear_vel;
+        // back_driving buffer logic
+        if (back_driving_flag_cnt < 2)
+        {
+            back_driving_flag_cnt++;
+            converted.linear.x = -8.0;
+        }
+        else if (back_driving_flag_cnt < 5)
+        {
+            back_driving_flag_cnt++;
+            converted.linear.x = 0.0;
+        }
+        else
+        {
+            converted.linear.x = -linear_vel;
+        }
     }
     else
     {
+        back_driving_flag_cnt = 0;
         ROS_INFO("cmd_vel_converter >0 - linear_vel: %f", linear_vel);
         converted.linear.x = linear_vel;
     }
