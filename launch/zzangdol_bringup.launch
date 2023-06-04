@@ -17,8 +17,7 @@
   </include>
 
   <!-- bringup odom publisher -->
-  <include file="$(find zzangdol_bringup)/launch/zzangdol_odom_tf_publisher.launch">
-  </include>
+  <!-- <include file="$(find zzangdol_bringup)/launch/zzangdol_odom_tf_publisher.launch"/> -->
 
   <!-- <node pkg="navstack_pub" type="zzangdol_diagnostics" name="zzangdol_diagnostics" output="screen"/> -->
 </launch>

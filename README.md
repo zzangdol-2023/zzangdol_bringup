@@ -1,5 +1,5 @@
-# zzangdol bringup ros package
-
+# zzangdol_core_v1 
+## zzangdol-ai-car firmware-v1, bringup package
 ros wrapper bringup codes for zzangdol-ai-car
 
 ## 1. Quick start
