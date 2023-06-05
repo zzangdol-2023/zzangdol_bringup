@@ -1,8 +1,15 @@
+<!-- -->
+
 <launch>
   <arg name="multi_robot_name" default=""/>
+  <arg name="usb_config" default="true"/>
+  
+  <arg unless="$(arg usb_config)" name="ardu_usb_port" value="1"/>
+  <arg     if="$(arg usb_config)" name="ardu_usb_port" value="0"/>
+  
   <!-- zzangdol_core -->
   <node pkg="rosserial_python" type="serial_node.py" name="zzangdol_core" output="screen">
-    <param name="port" value="/dev/ttyUSB0"/>
+    <param name="port" value="/dev/ttyUSB$(arg ardu_usb_port)"/>
     <param name="baud" value="115200"/>
     <param name="tf_prefix" value="$(arg multi_robot_name)"/>
   </node>
