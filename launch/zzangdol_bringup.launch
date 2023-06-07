@@ -22,10 +22,6 @@
     <arg name="usb_config" value="$(arg usb_config)"/>
   </include>
 
-  <!-- 7,8. odom tf, topic publisher -->
-  <!-- <include file="$(find zzangdol_bringup)/launch/laser_scan_matcher.launch"/> -->
-
- 
 
   <!-- <node pkg="navstack_pub" type="zzangdol_diagnostics" name="zzangdol_diagnostics" output="screen"/> -->
 </launch>
