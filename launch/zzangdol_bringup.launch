@@ -2,17 +2,18 @@
 
 <launch>
   <arg name="multi_robot_name" default=""/>
-  <arg name="usb_config" default="true"/>
+  <arg name="usb_config" default="false"/>
+
   
   <!-- 1,2. bringup HW state tf publisher-->
   <include file="$(find zzangdol_bringup)/launch/zzangdol_state_publisher.launch"/>
 
   <!-- 3,4. bringup rosserial communication with mcu, cmd_Vel converter -->
-  <include file="$(find zzangdol_bringup)/launch/zzangdol_core.launch">
+
+  <!-- <include file="$(find zzangdol_bringup)/launch/zzangdol_core.launch">
     <arg name="multi_robot_name" value="$(arg multi_robot_name)"/>
     <arg name="usb_config" value="$(arg usb_config)"/>
-  </include>
-
+  </include> -->
   <!-- 5. bringup myahrs sensor -->
   <include file="$(find zzangdol_bringup)/launch/zzangdol_myahrs.launch"/>
 
@@ -20,9 +21,10 @@
   <include file="$(find zzangdol_bringup)/launch/zzangdol_lidar.launch">
     <arg name="usb_config" value="$(arg usb_config)"/>
   </include>
-  
+
   <!-- 7,8. odom tf, topic publisher -->
-  <include file="$(find zzangdol_bringup)/launch/laser_scan_matcher.launch"/>
+  <!-- <include file="$(find zzangdol_bringup)/launch/laser_scan_matcher.launch"/> -->
+
  
 
   <!-- <node pkg="navstack_pub" type="zzangdol_diagnostics" name="zzangdol_diagnostics" output="screen"/> -->
