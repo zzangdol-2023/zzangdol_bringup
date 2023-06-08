@@ -6,7 +6,6 @@
   <arg name="usb_config" default="false"/>
   <arg name="bag_filename" default="$(eval eval ('_' + '_import_' + '_(\'datetime\')').datetime.now().strftime('%Y-%m-%d_%H:%M:%S'))"/>
 
-
   <include file="$(find zzangdol_bringup)/launch/zzangdol_bring_minimal.launch">
     <arg name="rviz" default="false"/>
   </include>

@@ -5,10 +5,8 @@
 <launch>
   <arg name="usb_config" default="false"/>
 
-  
   <!-- 1. bringup HW state tf publisher-->
   <include file="$(find zzangdol_bringup)/launch/zzangdol_state_publisher.launch"/>
-
 
   <!-- 2. bringup myahrs sensor -->
   <include file="$(find zzangdol_bringup)/launch/zzangdol_myahrs.launch"/>
