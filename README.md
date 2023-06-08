@@ -22,11 +22,11 @@ roslaunch zzangdol_bringup [below launch file]
 
 ### launch files
 
-#### launch / zzangdol_bringup_all.launch
+#### launch / zzangdol_bring_all.launch
 
 - main bringup file for oprating zzangdol_ai_car
 
-#### launch / zzangdol_bringup_minimal.launch
+#### launch / zzangdol_bring_minimal.launch
 
 - essential bringup file for testing senser data
 

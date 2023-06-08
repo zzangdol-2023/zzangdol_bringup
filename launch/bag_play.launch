@@ -1,0 +1,13 @@
+<!-- -->
+
+<launch>
+  <arg name="bag_filename" default="default"/>
+
+  <param name="/use_sim_time" value="true" />
+
+  <include file="$(find zzangdol_bringup)/launch/zzangdol_state_publisher.launch"/>
+
+  <node name="playbag" pkg="rosbag" type="play"
+      args="$(find zzangdol_bringup)/bag/$(arg bag_filename).bag --pause --clock "/>
+
+</launch>

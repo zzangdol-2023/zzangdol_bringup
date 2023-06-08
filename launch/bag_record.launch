@@ -1,0 +1,13 @@
+<!-- 
+  
+-->
+
+<launch>
+  <arg name="usb_config" default="false"/>
+  <arg name="bag_filename" default="$(eval eval ('_' + '_import_' + '_(\'datetime\')').datetime.now().strftime('%Y-%m-%d_%H:%M:%S'))"/>
+
+  <include file="$(find zzangdol_bringup)/launch/zzangdol_bring_minimal.launch"/>
+
+  <node name="rviz" pkg="rviz" type="rviz" required="false"
+    args="-d $(find zzangdol_bringup)/rviz/record_monitoring.rviz" />
+</launch>
