@@ -26,7 +26,7 @@ roslaunch zzangdol_bringup [below launch file]
 
 - main bringup file for oprating zzangdol_ai_car
 
-#### launch / zzangdol_bringup_all.launch
+#### launch / zzangdol_bringup_minimal.launch
 
 - essential bringup file for testing senser data
 
@@ -42,9 +42,13 @@ roslaunch zzangdol_bringup [below launch file]
 
 - myahrs launch file
 
-#### launch / zzangdol_odom_tf.launch
+#### launch / zzangdol_state_publisher.launch
 
-- odom_tf (odom_tf - base_footprint tf topic launch) file
+- zzangdol_ai_car HW tf topic publisher node launch file
+
+~~#### launch / zzangdol_odom_tf.launch~~
+
+~~- odom_tf (odom_tf - base_footprint tf topic launch) file~~
 
 ### codes
 
@@ -53,11 +57,13 @@ roslaunch zzangdol_bringup [below launch file]
 - converter node which converts cmd_vel to cmd_vel_converted topic
 - cmd_vel converted topic is specific control value which is compatible with zzangdol-ai-car motor driver.
 
-#### src / odom_tf_publisher_node.py
+~~ 
+#### src / odom_tf_publisher_node.py 
 
-- odom_tf publisher node
+- odom_tf publisher node 
 - In our projects, used mcu is arduino mega, wich doesn't have FPU.
 - Because of that, we cannot calculate exact value of odom_tf. so we used high-level node which publish odom_tf.
 - This node's role :
-  - 1. publish odom_tf which link odom_tf and base_footprint
-  - 2. publish odom topic
+- 1. publish odom_tf which link odom_tf and base_footprint
+- 2. publish odom topic 
+~~
