@@ -9,7 +9,7 @@ rplidar, myahrs roslaunch file for zzangdol-ai-car.
 
 
 ```bash
-roslaunch zzangdol_bringup zzangdol_bringup.launch
+roslaunch zzangdol_bringup zzangdol_bringup_all.launch
 ```
 
 ## 2. Package Explain
@@ -22,13 +22,13 @@ roslaunch zzangdol_bringup [below launch file]
 
 ### launch files
 
-#### launch / zzangdol_bringup.launch
+#### launch / zzangdol_bringup_all.launch
 
-- main bringup file
+- main bringup file for oprating zzangdol_ai_car
 
-#### launch / zzangdol_cmd_vel_converter.launch
+#### launch / zzangdol_bringup_all.launch
 
-- cmd_vel converter launch file
+- essential bringup file for testing senser data
 
 #### launch / zzangdol_core.launch
 
