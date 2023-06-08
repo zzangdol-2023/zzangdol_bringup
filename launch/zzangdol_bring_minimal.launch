@@ -4,8 +4,8 @@
 -->
 
 <launch>
-  <arg name="multi_robot_name" default=""/>
   <arg name="usb_config" default="false"/>
+  <arg name="rviz" default="true"/>
 
   <!-- 1. bringup HW state tf publisher-->
   <include file="$(find zzangdol_bringup)/launch/zzangdol_state_publisher.launch"/>
@@ -17,5 +17,10 @@
   <include file="$(find zzangdol_bringup)/launch/zzangdol_lidar.launch">
     <arg name="usb_config" value="$(arg usb_config)"/>
   </include>
+
+  <group if="$(arg rviz)">
+    <node name="$(anon rviz)" pkg="rviz" type="rviz" required="false"
+          args="-d $(find zzangdol_bringup)/rviz/record_monitoring.rviz" />
+  </group>
 
 </launch>

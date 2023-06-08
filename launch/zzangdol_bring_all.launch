@@ -3,7 +3,6 @@
 -->
 
 <launch>
-  <arg name="multi_robot_name" default=""/>
   <arg name="usb_config" default="false"/>
 
   
