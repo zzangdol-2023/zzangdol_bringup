@@ -18,8 +18,8 @@
 #define MIN_ANGLE 0
 
 
-#define P_VEL 40
-#define P_ANG 20
+#define P_VEL 18
+#define P_ANG -30
 
 // Create a publisher for the cmd_vel topic
 ros::Publisher cmd_vel_converter;
@@ -251,8 +251,8 @@ void cmdVelEcho_simple_Callback(const geometry_msgs::Twist::ConstPtr &cmd_vel_ec
 
 void cmdVel_simple_Callback(const geometry_msgs::Twist::ConstPtr &cmd_vel)
 {
-    converted.linear.x = P_VEL * cmd_vel->linear.x;
-    converted.angular.z = P_ANG * cmd_vel->angular.z;
+    converted.linear.x = (cmd_vel->linear.x) * P_VEL;
+    converted.angular.z = (cmd_vel->angular.z) * P_ANG;
 
     cmd_vel_converter.publish(converted);
 }
@@ -275,11 +275,11 @@ int main(int argc, char **argv)
     // ROS_INFO("cmd_vel_echo_converter - Setup publisher on cmd_vel_converted");
 
     // Subscribe to the cmd_vel topic
-    cmd_vel_sub = nh.subscribe("cmd_vel", 10, cmdVelEcho_simple_Callback);
+    cmd_vel_sub = nh.subscribe("cmd_vel", 10, cmdVel_simple_Callback);
     // ROS_INFO("cmd_vel_converter - Setup subscriber on cmd_vel");
 
     // Subscribe to the cmd_vel topic
-    cmd_vel_echo_sub = nh.subscribe("cmd_vel_echo", 10, cmdVel_simple_Callback);
+    cmd_vel_echo_sub = nh.subscribe("cmd_vel_echo", 10, cmdVelEcho_simple_Callback);
     // ROS_INFO("cmd_vel_echo_converter - Setup subscriber on cmd_vel");
 
     // Enter the main event loop

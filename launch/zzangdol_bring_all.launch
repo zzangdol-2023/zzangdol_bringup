@@ -18,7 +18,6 @@
 
   <!-- 4. bringup rosserial communication with mcu, cmd_Vel converter -->
   <include file="$(find zzangdol_bringup)/launch/zzangdol_core.launch">
-    <arg name="multi_robot_name" value="$(arg multi_robot_name)"/>
     <arg name="usb_config" value="$(arg usb_config)"/>
   </include>
 
