@@ -4,23 +4,24 @@
 
 <launch>
   <arg name="usb_config" default="false"/>
+  
+  <arg name="record" default="false"/>
+  <arg name="bag_filename" default="$(eval eval ('_' + '_import_' + '_(\'datetime\')').datetime.now().strftime('%Y-%m-%d_%H:%M:%S'))"/>
+  
+  <arg name="rviz" default="false"/>
 
-  <!-- 1. bringup HW state tf publisher-->
-  <include file="$(find zzangdol_bringup)/launch/zzangdol_state_publisher.launch"/>
 
-  <!-- 2. bringup myahrs sensor -->
-  <include file="$(find zzangdol_bringup)/launch/zzangdol_myahrs.launch"/>
-
-  <!-- 3. bringup lidar sensor -->
-  <include file="$(find zzangdol_bringup)/launch/zzangdol_lidar.launch">
-    <arg name="usb_config" value="$(arg usb_config)"/>
+  <!-- zzangdol_bring_minimal -->
+  <include file="$(find zzangdol_bringup)/launch/zzangdol_bring_minimal.launch">
+    <arg name="usb_config" default="$(arg usb_config)"/>
+    <arg name="record" default="$(arg record)"/>
+    <arg name="bag_filename" default="$(arg bag_filename)"/>
+    <arg name="rviz" default="$(arg rviz)"/>
   </include>
 
-  <!-- 4. bringup rosserial communication with mcu, cmd_Vel converter -->
+  <!-- ++ bringup rosserial communication with mcu, cmd_Vel converter -->
   <include file="$(find zzangdol_bringup)/launch/zzangdol_core.launch">
     <arg name="usb_config" value="$(arg usb_config)"/>
   </include>
 
-  <!-- ??? -->
-  <!-- <node pkg="navstack_pub" type="zzangdol_diagnostics" name="zzangdol_diagnostics" output="screen"/> -->
 </launch>

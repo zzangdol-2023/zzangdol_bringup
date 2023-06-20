@@ -3,6 +3,7 @@
 <launch>
   <arg name="bag_filename" 
   default="$(eval eval ('_' + '_import_' + '_(\'os\')').path.splitext(eval ('_' + '_import_' + '_(\'os\')').path.basename(max(eval ('_' + '_import_' + '_(\'glob\')').glob(find('zzangdol_bringup')+'/bag/*'), key=eval ('_' + '_import_' + '_(\'os\')').path.getctime)))[0])"/>
+  <arg name="rate" default="1" /> 
   <!-- most recent bag file as bag_file -->
 
   <param name="/use_sim_time" value="true" />
@@ -10,7 +11,7 @@
   <include file="$(find zzangdol_bringup)/launch/zzangdol_state_publisher.launch"/>
 
   <node name="playbag" pkg="rosbag" type="play"
-      args="$(find zzangdol_bringup)/bag/$(arg bag_filename).bag --pause --clock "/>
+      args="$(find zzangdol_bringup)/bag/$(arg bag_filename).bag --pause --clock --rate=$(arg rate)"/>
 
   <node name="$(anon rviz)" pkg="rviz" type="rviz" required="false"
     args="-d $(find zzangdol_bringup)/rviz/record_monitoring.rviz" />
