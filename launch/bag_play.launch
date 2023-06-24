@@ -1,19 +1,33 @@
 <!-- bag_filename를 인수로 주고 bag 파일을 재생, monitoring을 위한 rviz도 제공 -->
 
 <launch>
+  <!-- most recent bag file as bag_file -->
   <arg name="bag_filename" 
   default="$(eval eval ('_' + '_import_' + '_(\'os\')').path.splitext(eval ('_' + '_import_' + '_(\'os\')').path.basename(max(eval ('_' + '_import_' + '_(\'glob\')').glob(find('zzangdol_bringup')+'/bag/*'), key=eval ('_' + '_import_' + '_(\'os\')').path.getctime)))[0])"/>
+
   <arg name="rate" default="1" /> 
-  <!-- most recent bag file as bag_file -->
+  
+  <arg name="usb_config" default="false"/>
+  <arg name="rviz" default="false"/>
+
+
 
   <param name="/use_sim_time" value="true" />
+
+
 
   <include file="$(find zzangdol_bringup)/launch/zzangdol_state_publisher.launch"/>
 
   <node name="playbag" pkg="rosbag" type="play"
       args="$(find zzangdol_bringup)/bag/$(arg bag_filename).bag --pause --clock --rate=$(arg rate)"/>
 
-  <node name="$(anon rviz)" pkg="rviz" type="rviz" required="false"
+  <node name="$(anon rviz)" pkg="rviz" type="rviz" required="false" if="$(arg rviz)"
     args="-d $(find zzangdol_bringup)/rviz/record_monitoring.rviz" />
+    
+  <!-- ++ bringup rosserial communication with mcu, cmd_Vel converter -->
+  <include file="$(find zzangdol_bringup)/launch/zzangdol_core.launch">
+    <arg name="usb_config" value="$(arg usb_config)"/>
+  </include>
+    
 
 </launch>
