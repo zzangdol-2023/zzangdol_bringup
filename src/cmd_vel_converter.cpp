@@ -1,7 +1,7 @@
 /*
  * cmd_vel_converter.cpp
  * Author: GeonhaPark<geonhab504@gmail.com>
- * Date: 2020.05.27
+ * Date: 2020.06.25
  * Description: cmd_vel_converter node which converts cmd_vel and cmd_vel_ehco topic to firmware accessible data
  */
 
@@ -17,9 +17,13 @@
 #define MAX_ANGLE 20
 #define MIN_ANGLE 0
 
+// prev value : 06.25 <
+// #define P_VEL 18
+// #define P_ANG -30
 
-#define P_VEL 18
-#define P_ANG -30
+// last value : > 06.25
+#define P_VEL 22
+#define P_ANG -20
 
 // Create a publisher for the cmd_vel topic
 ros::Publisher cmd_vel_converter;
@@ -280,6 +284,7 @@ int main(int argc, char **argv)
 
     // Subscribe to the cmd_vel topic
     cmd_vel_echo_sub = nh.subscribe("cmd_vel_echo", 10, cmdVelEcho_simple_Callback);
+    // cmd_vel_echo_sub = nh.subscribe("cmd_vel_echo", 10, cmdVelEchoCallback);
     // ROS_INFO("cmd_vel_echo_converter - Setup subscriber on cmd_vel");
 
     // Enter the main event loop
