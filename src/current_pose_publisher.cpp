@@ -11,25 +11,21 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
-tf2_ros::Buffer tf_buffer;
-ros::Publisher pose_publisher;
-geometry_msgs::PoseStamped pose_stamped;
-geometry_msgs::TransformStamped transform;
 
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "current_pose_publisher");
     ros::NodeHandle nh;
-
+    ros::Publisher pose_publisher = nh.advertise<geometry_msgs::PoseStamped>("current_pose", 1);
+    tf2_ros::Buffer tf_buffer;
     tf2_ros::TransformListener listener(tf_buffer);
-    pose_publisher = nh.advertise<geometry_msgs::PoseStamped>("current_pose", 5);
     ROS_INFO("pose_publisher started");
-
     while (ros::ok())
     {
         try
         {
-            transform = tf_buffer.lookupTransform("map", "base_link", ros::Time(0));
+            geometry_msgs::TransformStamped transform = tf_buffer.lookupTransform("map", "base_link", ros::Time(0));
+            geometry_msgs::PoseStamped pose_stamped;
             pose_stamped.header.stamp = ros::Time::now();
             pose_stamped.header.frame_id = "map";
             pose_stamped.pose.position.x = transform.transform.translation.x;
@@ -52,7 +48,7 @@ int main(int argc, char **argv)
             continue;
         }
 
-        ros::spinOnce();
+        // ros::spinOnce();
     }
 
     return 0;
