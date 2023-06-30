@@ -95,10 +95,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
  catkin_package(
-  INCLUDE_DIRS include
+## INCLUDE_DIRS include
   LIBRARIES zzangdol_bringup
   CATKIN_DEPENDS roscpp std_msgs tf
-  DEPENDS system_lib
+## DEPENDS system_lib
 )
 
 ###########
@@ -116,12 +116,15 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(cmd_vel_converter src/cmd_vel_converter.cpp)
+add_executable(current_pose_publisher src/current_pose_publisher.cpp)
 
 ## Add cmake target dependencies of the library
 add_dependencies(cmd_vel_converter ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(current_pose_publisher ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(cmd_vel_converter ${catkin_LIBRARIES})
+target_link_libraries(current_pose_publisher ${catkin_LIBRARIES})
 
 
 #############
