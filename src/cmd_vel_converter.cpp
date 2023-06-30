@@ -18,12 +18,12 @@
 #define MIN_ANGLE 0
 
 // prev value : 06.25 <
-// #define P_VEL 18
-// #define P_ANG -30
+#define P_VEL 18
+#define P_ANG -30
 
 // last value : > 06.25
-#define P_VEL 22
-#define P_ANG -20
+// #define P_VEL 22
+// #define P_ANG -10
 
 // Create a publisher for the cmd_vel topic
 ros::Publisher cmd_vel_converter;

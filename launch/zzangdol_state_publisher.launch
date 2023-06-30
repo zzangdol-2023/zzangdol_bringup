@@ -1,7 +1,7 @@
 <!-- turtlebot3_bringup 패키지의 turtlebot3_remote와 model을 zzangdol car 버전으로 해서 합쳐놓은 파일 -->
 
 <launch>
-    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find zzangdol_bringup)/urdf/zzangdol_ai_car.urdf.xacro'"/>
+    <param name="robot_description" command="$(find xacro)/xacro '$(find zzangdol_bringup)/urdf/zzangdol_ai_car.urdf.xacro'"/>
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
    
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
