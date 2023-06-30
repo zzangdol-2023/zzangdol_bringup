@@ -18,7 +18,7 @@
 #define MIN_ANGLE 0
 
 // prev value : 06.25 <
-#define P_VEL 18
+#define P_VEL 9
 #define P_ANG -30
 
 // last value : > 06.25
@@ -247,7 +247,7 @@ void cmdVelCallback(const geometry_msgs::Twist::ConstPtr &cmd_vel)
 
 void cmdVelEcho_simple_Callback(const geometry_msgs::Twist::ConstPtr &cmd_vel_echo)
 {
-    echo_converted.linear.x = (cmd_vel_echo->linear.x)/P_VEL;
+    echo_converted.linear.x = (cmd_vel_echo->linear.x)/P_VEL + 6.0;
     echo_converted.angular.z = (cmd_vel_echo->angular.z)/P_ANG;
    
     cmd_vel_echo_converter.publish(echo_converted);
