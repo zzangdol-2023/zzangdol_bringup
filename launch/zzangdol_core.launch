@@ -15,7 +15,7 @@
   </node>
   <!-- cmd_vel converter  -->
   <node pkg="zzangdol_bringup" type="cmd_vel_converter" name="cmd_vel_converter" output="screen"/>
-  <!-- current_pose_publisher  -->
-  <node pkg="zzangdol_bringup" type="current_pose_publisher" name="current_pose_publisher" output="screen"/>
+   <!-- current_pose_publisher  -->
+  <!--<node pkg="zzangdol_bringup" type="current_pose_publisher" name="current_pose_publisher" output="screen"/> -->
 
 </launch>
