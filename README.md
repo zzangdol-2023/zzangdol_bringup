@@ -9,10 +9,17 @@ rplidar, myahrs roslaunch file for zzangdol-ai-car.
 
 
 ```bash
-roslaunch zzangdol_bringup zzangdol_bringup_all.launch
+ roslaunch zzangdol_bringup zzangdol_bring_all.launch usb_config:=false record:=false
 ```
+usb_config selects ports. When record option is true, it records bag files
 
 ## 2. Package Explain
+
+#### src / cmd_vel_converter.cpp
+
+- converter node which converts cmd_vel to cmd_vel_converted topic
+- cmd_vel converted topic is specific control value which is compatible with zzangdol-ai-car motor driver.
+
 
 Other launch files can execute with below commands
 
