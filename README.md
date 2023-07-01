@@ -9,10 +9,17 @@ rplidar, myahrs roslaunch file for zzangdol-ai-car.
 
 
 ```bash
-roslaunch zzangdol_bringup zzangdol_bringup.launch
+ roslaunch zzangdol_bringup zzangdol_bring_all.launch usb_config:=false record:=false
 ```
+usb_config selects ports. When record option is true, it records bag files
 
 ## 2. Package Explain
+
+#### src / cmd_vel_converter.cpp
+
+- converter node which converts cmd_vel to cmd_vel_converted topic
+- cmd_vel converted topic is specific control value which is compatible with zzangdol-ai-car motor driver.
+
 
 Other launch files can execute with below commands
 
@@ -22,13 +29,13 @@ roslaunch zzangdol_bringup [below launch file]
 
 ### launch files
 
-#### launch / zzangdol_bringup.launch
+#### launch / zzangdol_bring_all.launch
 
-- main bringup file
+- main bringup file for oprating zzangdol_ai_car
 
-#### launch / zzangdol_cmd_vel_converter.launch
+#### launch / zzangdol_bring_minimal.launch
 
-- cmd_vel converter launch file
+- essential bringup file for testing senser data
 
 #### launch / zzangdol_core.launch
 
@@ -42,9 +49,10 @@ roslaunch zzangdol_bringup [below launch file]
 
 - myahrs launch file
 
-#### launch / zzangdol_odom_tf.launch
+#### launch / zzangdol_state_publisher.launch
 
-- odom_tf (odom_tf - base_footprint tf topic launch) file
+- zzangdol_ai_car HW tf topic publisher node launch file
+
 
 ### codes
 
@@ -52,12 +60,3 @@ roslaunch zzangdol_bringup [below launch file]
 
 - converter node which converts cmd_vel to cmd_vel_converted topic
 - cmd_vel converted topic is specific control value which is compatible with zzangdol-ai-car motor driver.
-
-#### src / odom_tf_publisher_node.py
-
-- odom_tf publisher node
-- In our projects, used mcu is arduino mega, wich doesn't have FPU.
-- Because of that, we cannot calculate exact value of odom_tf. so we used high-level node which publish odom_tf.
-- This node's role :
-  - 1. publish odom_tf which link odom_tf and base_footprint
-  - 2. publish odom topic

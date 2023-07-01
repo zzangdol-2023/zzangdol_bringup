@@ -14,6 +14,8 @@
     <param name="tf_prefix" value="$(arg multi_robot_name)"/>
   </node>
   <!-- cmd_vel converter  -->
-  <include file="$(find zzangdol_bringup)/launch/zzangdol_cmd_vel_converter.launch">
-  </include>
+  <node pkg="zzangdol_bringup" type="cmd_vel_converter" name="cmd_vel_converter" output="screen"/>
+   <!-- current_pose_publisher  -->
+  <!--<node pkg="zzangdol_bringup" type="current_pose_publisher" name="current_pose_publisher" output="screen"/> -->
+
 </launch>

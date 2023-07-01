@@ -1,0 +1,27 @@
+<!-- 
+  bring all of sensor, tf, ros serial node and topic to operate zzangdol car
+-->
+
+<launch>
+  <arg name="usb_config" default="false"/>
+  
+  <arg name="record" default="false"/>
+  <arg name="bag_filename" default="$(eval eval ('_' + '_import_' + '_(\'datetime\')').datetime.now().strftime('%Y-%m-%d_%H:%M:%S'))"/>
+  
+  <arg name="rviz" default="false"/>
+
+
+  <!-- zzangdol_bring_minimal -->
+  <include file="$(find zzangdol_bringup)/launch/zzangdol_bring_minimal.launch">
+    <arg name="usb_config" default="$(arg usb_config)"/>
+    <arg name="record" default="$(arg record)"/>
+    <arg name="bag_filename" default="$(arg bag_filename)"/>
+    <arg name="rviz" default="$(arg rviz)"/>
+  </include>
+
+  <!-- ++ bringup rosserial communication with mcu, cmd_Vel converter -->
+  <include file="$(find zzangdol_bringup)/launch/zzangdol_core.launch">
+    <arg name="usb_config" value="$(arg usb_config)"/>
+  </include>
+
+</launch>

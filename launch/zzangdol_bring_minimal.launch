@@ -1,0 +1,32 @@
+<!-- 
+  Bring necessary things to get data, make bag file and simulate.
+  sensor data, tf node & topic will be made from this launch file
+-->
+
+<launch>
+  <arg name="usb_config" default="false"/>
+  
+  <arg name="record" default="false"/>
+  <arg name="bag_filename" default="$(eval eval ('_' + '_import_' + '_(\'datetime\')').datetime.now().strftime('%Y-%m-%d_%H:%M:%S'))"/>
+  
+  <arg name="rviz" default="true"/>
+
+  <!-- 1. bringup HW state tf publisher-->
+  <include file="$(find zzangdol_bringup)/launch/zzangdol_state_publisher.launch"/>
+
+  <!-- 2. bringup myahrs sensor -->
+  <include file="$(find zzangdol_bringup)/launch/zzangdol_myahrs.launch"/>
+
+  <!-- 3. bringup lidar sensor -->
+  <include file="$(find zzangdol_bringup)/launch/zzangdol_lidar.launch">
+    <arg name="usb_config" value="$(arg usb_config)"/>
+  </include>
+  
+  <node pkg="rosbag" type="record" name="bag_record" required="true" if="$(arg record)"
+    args="/imu/data /scan -O $(find zzangdol_bringup)/bag/$(arg bag_filename).bag  "/>
+
+  <node name="$(anon rviz)" pkg="rviz" type="rviz" required="false" if="$(arg rviz)"
+    args="-d $(find zzangdol_bringup)/rviz/record_monitoring.rviz" />
+  
+
+</launch>
