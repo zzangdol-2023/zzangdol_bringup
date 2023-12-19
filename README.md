@@ -1,4 +1,5 @@
 # zzangdol_core_v1 
+Last Update : 230701
 ## zzangdol-ai-car firmware-v1, bringup package
 ros wrapper bringup codes for zzangdol-ai-car
 

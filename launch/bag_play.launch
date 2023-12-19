@@ -26,11 +26,11 @@
     args="-d $(find zzangdol_bringup)/rviz/record_monitoring.rviz" />
     
   <!-- ++ bringup rosserial communication with mcu, cmd_Vel converter -->
-  <group if="$(arg arduino)">
+<!--  <group if="$(arg arduino)">
     <include file="$(find zzangdol_bringup)/launch/zzangdol_core.launch">
       <arg name="usb_config" value="$(arg usb_config)"/>
     </include>
-  </group>
+  </group> -->
     
 
 </launch>
