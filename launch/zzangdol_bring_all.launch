@@ -6,7 +6,7 @@
   <arg name="usb_config" default="false"/>
   
   <arg name="record" default="false"/>
-  <arg name="bag_filename" default="$(eval eval ('_' + '_import_' + '_(\'datetime\')').datetime.now().strftime('%Y-%m-%d_%H:%M:%S'))"/>
+  <arg name="bag_filename" default="$(eval eval ('_' + '_import_' + '_(\'datetime\')').datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))"/>
   
   <arg name="rviz" default="false"/>
 
