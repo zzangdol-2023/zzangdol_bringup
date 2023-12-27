@@ -16,7 +16,7 @@
 #define MIN_LINEAR_VEL 6
 #define MAX_ANGLE 20
 #define MIN_ANGLE 0
-
+#define STEERING_DEGREE_WEIGHT 80.0
 // prev value : 06.25 <
 #define P_VEL 10
 #define P_ANG -25
@@ -127,6 +127,9 @@ bool cmdVel2Converted(const geometry_msgs::Twist::ConstPtr &cmd_vel)
     // }
     double steering_radian = std::atan(wheelbase_ / r);
     double steering_degree = std::fabs(steering_radian * (180.0 / M_PI));
+    steering_degree*=STEERING_DEGREE_WEIGHT;
+    ROS_INFO("converted - Received steering_degree: %f\n", steering_degree);
+    
     if ((int)steering_degree > MAX_ANGLE)
         steering_degree = MAX_ANGLE;
     if ((int)steering_degree <= MIN_ANGLE)
