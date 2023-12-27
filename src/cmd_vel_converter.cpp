@@ -1,7 +1,7 @@
 /*
  * cmd_vel_converter.cpp
  * Author: GeonhaPark<geonhab504@gmail.com>
- * Date: 2020.06.30
+ * Date: 2020.12.26
  * Description: cmd_vel_converter node which converts cmd_vel and cmd_vel_ehco topic to firmware accessible data
  */
 
@@ -17,6 +17,9 @@
 #define MAX_ANGLE 20
 #define MIN_ANGLE 0
 #define STEERING_DEGREE_WEIGHT 80.0
+
+#define DEBUG_WITH_ROSINFO 0
+
 // prev value : 06.25 <
 #define P_VEL 10
 #define P_ANG -25
@@ -74,35 +77,53 @@ bool cmdVelEcho2Converted(const geometry_msgs::Twist::ConstPtr &cmd_vel_echo)
     // echo_linear_vel = round(100*echo_linear_vel)/100;
     if (std::signbit(raw_dc_pwm))
     {
-        // ROS_INFO("cmd_vel_echo_converter <0 - echo_linear_vel: %f", -echo_linear_vel);
+#if DEBUG_WITH_ROSINFO
+        ROS_INFO("cmd_vel_echo_converter <0 - echo_linear_vel: %f", -echo_linear_vel);
+#endif
         echo_converted.linear.x = -echo_linear_vel;
     }
     else
     {
-        // ROS_INFO("cmd_vel_echo_converter >0 - echo_linear_vel: %f", echo_linear_vel);
+#if DEBUG_WITH_ROSINFO
+        ROS_INFO("cmd_vel_echo_converter >0 - echo_linear_vel: %f", echo_linear_vel);
+#endif
         echo_converted.linear.x = echo_linear_vel;
     }
 
     /* get steering angle data from cmd_vel_echo (angle to radian/s) */
-    // ROS_INFO("cmd_vel_echo_converter - raw_steering_angle: %f", raw_steering_angle);
+#if DEBUG_WITH_ROSINFO
+    ROS_INFO("cmd_vel_echo_converter - raw_steering_angle: %f", raw_steering_angle);
+#endif
+
     // from angle to radian
     steering_radian = std::fabs(raw_steering_angle * (M_PI / 180.0));
-    // ROS_INFO("cnd_vel_echo_converter - steering_radian: %f", steering_radian);
+#if DEBUG_WITH_ROSINFO
+    ROS_INFO("cnd_vel_echo_converter - steering_radian: %f", steering_radian);
+#endif
+
     // from radian to radian/s : v =rw -> w = v/r
     echo_angular_vel = echo_linear_vel / steering_radian;
     if (std::isnan(echo_angular_vel) || std::isinf(echo_angular_vel))
     {
-        // ROS_INFO("cmd_vel_echo_converter - echo_angular_vel is nan");
+#if DEBUG_WITH_ROSINFO
+        ROS_INFO("cmd_vel_echo_converter - echo_angular_vel is nan");
+#endif
         echo_angular_vel = 0.0;
     }
     if (std::signbit(raw_steering_angle))
     {
-        // ROS_INFO("cmd_vel_echo_converter <0 - echo_angular_vel: %f", -echo_angular_vel);
+#if DEBUG_WITH_ROSINFO
+
+        ROS_INFO("cmd_vel_echo_converter <0 - echo_angular_vel: %f", -echo_angular_vel);
+#endif
         echo_converted.angular.z = -echo_angular_vel;
     }
     else
     {
-        // ROS_INFO("cmd_vel_echo_converter >0 - echo_angular_vel: %f", echo_angular_vel);
+#if DEBUG_WITH_ROSINFO
+
+        ROS_INFO("cmd_vel_echo_converter >0 - echo_angular_vel: %f", echo_angular_vel);
+#endif
         echo_converted.angular.z = echo_angular_vel;
     }
 
@@ -117,7 +138,10 @@ bool cmdVel2Converted(const geometry_msgs::Twist::ConstPtr &cmd_vel)
     // TODO : add ERROR handling logic => return false
     /* get steering angle data from cmd_vel (radian to angle) */
     double r = raw_linear_vel / raw_angular_vel;
-    // ROS_INFO("cmd_vel_converter - radius : %f", r);
+
+#if DEBUG_WITH_ROSINFO
+    ROS_INFO("cmd_vel_converter - radius : %f", r);
+#endif
     // if (fabs(r) < track_ / 2.0)
     // {
     //     if (r == 0)
@@ -127,9 +151,12 @@ bool cmdVel2Converted(const geometry_msgs::Twist::ConstPtr &cmd_vel)
     // }
     double steering_radian = std::atan(wheelbase_ / r);
     double steering_degree = std::fabs(steering_radian * (180.0 / M_PI));
-    steering_degree*=STEERING_DEGREE_WEIGHT;
+    steering_degree *= STEERING_DEGREE_WEIGHT;
+
+#if DEBUG_WITH_ROSINFO
     ROS_INFO("converted - Received steering_degree: %f\n", steering_degree);
-    
+#endif
+
     if ((int)steering_degree > MAX_ANGLE)
         steering_degree = MAX_ANGLE;
     if ((int)steering_degree <= MIN_ANGLE)
@@ -137,12 +164,18 @@ bool cmdVel2Converted(const geometry_msgs::Twist::ConstPtr &cmd_vel)
 
     if (std::signbit(raw_angular_vel))
     {
-        // ROS_INFO("cmd_vel_converter <0 - steering_degree: %f", -steering_degree);
+#if DEBUG_WITH_ROSINFO
+        ROS_INFO("cmd_vel_converter <0 - steering_degree: %f", -steering_degree);
+#endif
+
         converted.angular.z = -steering_degree;
     }
     else
     {
-        // ROS_INFO("cmd_vel_converter >0 - steering_degree: %f", steering_degree);
+#if DEBUG_WITH_ROSINFO
+        ROS_INFO("cmd_vel_converter >0 - steering_degree: %f", steering_degree);
+#endif
+
         converted.angular.z = steering_degree;
     }
 
@@ -169,7 +202,11 @@ bool cmdVel2Converted(const geometry_msgs::Twist::ConstPtr &cmd_vel)
 
     if (std::signbit(raw_linear_vel))
     {
-        // ROS_INFO("cmd_vel_converter <0 - linear_vel: %f", -linear_vel);
+
+#if DEBUG_WITH_ROSINFO
+        ROS_INFO("cmd_vel_converter <0 - linear_vel: %f", -linear_vel);
+#endif
+
         // back_driving buffer logic
         if (back_driving_flag_cnt < 2)
         {
@@ -189,7 +226,9 @@ bool cmdVel2Converted(const geometry_msgs::Twist::ConstPtr &cmd_vel)
     else
     {
         back_driving_flag_cnt = 0;
-        // ROS_INFO("cmd_vel_converter >0 - linear_vel: %f", linear_vel);
+#if DEBUG_WITH_ROSINFO
+        ROS_INFO("cmd_vel_converter >0 - linear_vel: %f", linear_vel);
+#endif
         converted.linear.x = linear_vel;
     }
 
@@ -202,23 +241,28 @@ bool cmdVel2Converted(const geometry_msgs::Twist::ConstPtr &cmd_vel)
 void cmdVelEchoCallback(const geometry_msgs::Twist::ConstPtr &cmd_vel_echo)
 {
     // Print the received linear and angular velocities
-    // ROS_INFO("cmd_vel_echo_converter - Received linear velocity: %f", cmd_vel_echo->linear.x);
-    // ROS_INFO("cmd_vel_echo_converter - Received angular velocity: %f", cmd_vel_echo->angular.z);
-
+#if DEBUG_WITH_ROSINFO
+    ROS_INFO("cmd_vel_echo_converter - Received linear velocity: %f", cmd_vel_echo->linear.x);
+    ROS_INFO("cmd_vel_echo_converter - Received angular velocity: %f", cmd_vel_echo->angular.z);
+#endif
     // Convert data range
     if (cmdVelEcho2Converted(cmd_vel_echo))
     {
         // Print the converted linear and angular velocities
-        // ROS_INFO("cmd_vel_echo_converter - converted linear velocity: %f", echo_converted.linear.x);
-        // ROS_INFO("cmd_vel_echo_converter - converted angular velocity: %f", echo_converted.angular.z);
+#if DEBUG_WITH_ROSINFO
+        ROS_INFO("cmd_vel_echo_converter - converted linear velocity: %f", echo_converted.linear.x);
+        ROS_INFO("cmd_vel_echo_converter - converted angular velocity: %f", echo_converted.angular.z);
+#endif
         cmd_vel_echo_converter.publish(echo_converted);
         echo_prev_converted = echo_converted;
     }
     else
     {
-        // ROS_INFO("cmd_vel_echo_converter - convert FAILED, publish previous data");
-        // ROS_INFO("cmd_vel_echo_converter - prev linear velocity: %f", echo_prev_converted.linear.x);
-        // ROS_INFO("cmd_vel_echo_converter - prev angular velocity: %f", echo_prev_converted.angular.z);
+#if DEBUG_WITH_ROSINFO
+        ROS_INFO("cmd_vel_echo_converter - convert FAILED, publish previous data");
+        ROS_INFO("cmd_vel_echo_converter - prev linear velocity: %f", echo_prev_converted.linear.x);
+        ROS_INFO("cmd_vel_echo_converter - prev angular velocity: %f", echo_prev_converted.angular.z);
+#endif
         cmd_vel_echo_converter.publish(echo_prev_converted);
     }
 }
@@ -226,23 +270,28 @@ void cmdVelEchoCallback(const geometry_msgs::Twist::ConstPtr &cmd_vel_echo)
 void cmdVelCallback(const geometry_msgs::Twist::ConstPtr &cmd_vel)
 {
     // Print the received linear and angular velocities
-    // ROS_INFO("cmd_vel_converter - Received linear velocity: %f", cmd_vel->linear.x);
-    // ROS_INFO("cmd_vel_converter - Received angular velocity: %f", cmd_vel->angular.z);
-
+#if DEBUG_WITH_ROSINFO
+    ROS_INFO("cmd_vel_converter - Received linear velocity: %f", cmd_vel->linear.x);
+    ROS_INFO("cmd_vel_converter - Received angular velocity: %f", cmd_vel->angular.z);
+#endif
     // Convert data range
     if (cmdVel2Converted(cmd_vel))
     {
         // Print the converted linear and angular velocities
-        // ROS_INFO("cmd_vel_converter - converted linear velocity: %f", converted.linear.x);
-        // ROS_INFO("cmd_vel_converter - converted angular velocity: %f", converted.angular.z);
+#if DEBUG_WITH_ROSINFO
+        ROS_INFO("cmd_vel_converter - converted linear velocity: %f", converted.linear.x);
+        ROS_INFO("cmd_vel_converter - converted angular velocity: %f", converted.angular.z);
+#endif
         cmd_vel_converter.publish(converted);
         prev_converted = converted;
     }
     else
     {
-        // ROS_INFO("cmd_vel_converter - convert FAILED, publish previous data");
-        // ROS_INFO("cmd_vel_converter - prev linear velocity: %f", prev_converted.linear.x);
-        // ROS_INFO("cmd_vel_converter - prev angular velocity: %f", prev_converted.angular.z);
+#if DEBUG_WITH_ROSINFO
+        ROS_INFO("cmd_vel_converter - convert FAILED, publish previous data");
+        ROS_INFO("cmd_vel_converter - prev linear velocity: %f", prev_converted.linear.x);
+        ROS_INFO("cmd_vel_converter - prev angular velocity: %f", prev_converted.angular.z);
+#endif
         cmd_vel_converter.publish(prev_converted);
     }
 }
@@ -258,7 +307,7 @@ void cmdVelEcho_simple_Callback(const geometry_msgs::Twist::ConstPtr &cmd_vel_ec
 void cmdVel_simple_Callback(const geometry_msgs::Twist::ConstPtr &cmd_vel)
 {
     cmd_vel->linear.x > 0
-        ? converted.linear.x = (cmd_vel->linear.x) * P_VEL + P_VEL_OFFSET
+        ? converted.linear.x = (cmd_vel->linear.x) *P_VEL + P_VEL_OFFSET
         : converted.linear.x = (cmd_vel->linear.x) * P_VEL - P_VEL_OFFSET;
     converted.angular.z = (cmd_vel->angular.z) * P_ANG;
 
@@ -275,20 +324,28 @@ int main(int argc, char **argv)
 
     // Publish cmd_vel_conveted topic
     cmd_vel_converter = nh.advertise<geometry_msgs::Twist>("cmd_vel_converted", 10);
-    // ROS_INFO("cmd_vel_converter - Setup publisher on cmd_vel_converted");
+#if DEBUG_WITH_ROSINFO
+    ROS_INFO("cmd_vel_converter - Setup publisher on cmd_vel_converted");
+#endif
 
     // Publish cmd_vel_echo_converted topic
     cmd_vel_echo_converter = nh.advertise<geometry_msgs::Twist>("cmd_vel_echo_converted", 10);
-    // ROS_INFO("cmd_vel_echo_converter - Setup publisher on cmd_vel_converted");
+#if DEBUG_WITH_ROSINFO
+    ROS_INFO("cmd_vel_echo_converter - Setup publisher on cmd_vel_converted");
+#endif
 
     // Subscribe to the cmd_vel topic
     cmd_vel_sub = nh.subscribe("cmd_vel", 10, cmdVel_simple_Callback);
-    // ROS_INFO("cmd_vel_converter - Setup subscriber on cmd_vel");
+#if DEBUG_WITH_ROSINFO
+    ROS_INFO("cmd_vel_converter - Setup subscriber on cmd_vel");
+#endif
 
     // Subscribe to the cmd_vel topic
     cmd_vel_echo_sub = nh.subscribe("cmd_vel_echo", 10, cmdVelEcho_simple_Callback);
     // cmd_vel_echo_sub = nh.subscribe("cmd_vel_echo", 10, cmdVelEchoCallback);
-    // ROS_INFO("cmd_vel_echo_converter - Setup subscriber on cmd_vel");
+#if DEBUG_WITH_ROSINFO
+    ROS_INFO("cmd_vel_echo_converter - Setup subscriber on cmd_vel");
+#endif
 
     // Enter the main event loop
     ros::spin();

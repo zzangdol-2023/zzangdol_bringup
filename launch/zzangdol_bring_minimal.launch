@@ -1,6 +1,19 @@
 <!-- 
+  Author : GeoChoi
+
   Bring necessary things to get data, make bag file and simulate.
   sensor data, tf node & topic will be made from this launch file
+
+  Not included in this launch file:
+    - cmd_vel converter
+    - rosserial communication with mcu(zzangdol_core.launch)
+
+  This file brings up:
+    - zzangdol_state_publisher.launch : brings up tf_state_publisher
+    - zzangdol_myahrs.launch : brings up myahrs(IMU) -> *** needs myahrs_driver package
+    - zzangdol_lidar.launch : brings up lidar -> *** needs rplidar_ros package
+    - rosbag record : record imu and lidar data
+    - rviz : visualize imu and lidar data
 -->
 
 <launch>
@@ -28,5 +41,4 @@
   <node name="$(anon rviz)" pkg="rviz" type="rviz" required="false" if="$(arg rviz)"
     args="-d $(find zzangdol_bringup)/rviz/record_monitoring.rviz" />
   
-
 </launch>

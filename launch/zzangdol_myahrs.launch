@@ -1,4 +1,13 @@
-<!-- -->
+<!-- 
+  Author : GeoChoi 
+
+  zzaangdol_myahrs.launch
+  brings up myahrs sensor
+
+  Needs myahrs_driver package
+  <https://github.com/robotpilot/myahrs_driver> 
+  : myahrs_driver package for ROS, Yoonseok Pyo
+-->
 
 <launch>
   <node pkg="myahrs_driver" type="myahrs_driver" name="myahrs_driver">

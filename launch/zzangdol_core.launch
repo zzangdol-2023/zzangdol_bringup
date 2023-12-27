@@ -1,4 +1,11 @@
-<!-- -->
+<!-- 
+Author : GeoChoi, GeonhaPark
+
+  zzangdol_core.launch
+  brings up mcu and cmd_vel converter
+    1. zzangdol_core : bring up rosserial communication with mcu
+    2. cmd_vel converter : convert cmd_vel topic to mcu's motor control topic
+-->
 
 <launch>
   <arg name="multi_robot_name" default=""/>
@@ -7,15 +14,13 @@
   <arg unless="$(arg usb_config)" name="ardu_usb_port" value="1"/>
   <arg     if="$(arg usb_config)" name="ardu_usb_port" value="0"/>
   
-  <!-- zzangdol_core -->
+  <!-- 1. zzangdol_core -->
   <node pkg="rosserial_python" type="serial_node.py" name="zzangdol_core" output="screen">
     <param name="port" value="/dev/ttyUSB$(arg ardu_usb_port)"/>
     <param name="baud" value="115200"/>
     <param name="tf_prefix" value="$(arg multi_robot_name)"/>
   </node>
-  <!-- cmd_vel converter  -->
+  
+  <!-- 2. cmd_vel converter  -->
   <node pkg="zzangdol_bringup" type="cmd_vel_converter" name="cmd_vel_converter" output="screen"/>
-   <!-- current_pose_publisher  -->
-  <!--<node pkg="zzangdol_bringup" type="current_pose_publisher" name="current_pose_publisher" output="screen"/> -->
-
 </launch>
