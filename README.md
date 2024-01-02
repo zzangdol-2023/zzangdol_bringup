@@ -1,6 +1,6 @@
 # zzangdol_core_v1
 
-Last Update : 23.12.23
+Last Update : 23.12.23   
 Last Updated by : GeonhaPark ( Seunmul )
 
 ## zzangdol-ai-car firmware-v1, bringup package
