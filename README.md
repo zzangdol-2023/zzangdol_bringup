@@ -1,16 +1,16 @@
-# zzangdol_core_v1
+# zzangdol_bringup
 
 Last Update : 23.12.23   
 Last Updated by : GeonhaPark ( Seunmul )
 
-## zzangdol-ai-car firmware-v1, bringup package
+## zzangdol-ai-car bringup packages 
 
-Bringup codes for zzangdol-ai-car, depends on ROS1
-
-## 1. Quick start
-
-Below codes will execute cmd_vel_converter node, rosserial node,
-rplidar, myahrs roslaunch file for zzangdol-ai-car.
+ROS bringup packages for zzangdol-ai-car, depends on ROS1.    
+Bring up below devices and exectue nodes:
+- RPLidar A1
+- MCU firmware(zzangdol-core-v1)
+- MyAHRS+
+- cmd_vel converter node
 
 ```bash
  roslaunch zzangdol_bringup zzangdol_bring_all.launch usb_config:=false record:=false
